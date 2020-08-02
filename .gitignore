@@ -1,0 +1,9 @@
+db.sqlite3
+geckodriver.log
+virtualenv
+__pycach__
+*.pyc
+*~
+/static
+.env
+functional_tests/screendumps
