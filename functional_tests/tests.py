@@ -24,7 +24,7 @@ class NewVisitorTest(unittest.TestCase):
         # She notices a page title and header mentions the message app name 
         self.assertIn('Mapp', self.browser.title)
         header_text = self.browser.find_element_by_tag_name('h1').text
-        self.assertIn('Mapp', header_text)
+        self.assertIn('Mapp Messages', header_text)
 
         # She is invited to send a message right away
         inputbox = self.browser.find_element_by_id('id_new_message')
@@ -44,9 +44,10 @@ class NewVisitorTest(unittest.TestCase):
         time.sleep(1)
 
         table = self.browser.find_element_by_id('id_message_table')
-        rows = table.find_element_by_tag_name('tr')
+        rows = table.find_elements_by_tag_name('tr')
         self.assertTrue(
-            any(row.text == 'I want to buy peacock feathers' for row in rows)
+            any(row.text == 'I want to buy peacock feathers' for row in rows),
+            'New message did not appear in table'
         )
 
         
