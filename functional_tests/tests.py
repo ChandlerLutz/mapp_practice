@@ -1,81 +1,41 @@
 # functional_tests/tests.py
-import os
-from datetime import datetime
-##from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
-from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.common.keys import Keys
-import time
+import unittest
 
-SCREEN_DUMP_LOCATION = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), 'screendumps'
-)
+class NewVisitorTest(unittest.TestCase):
 
+    def setUp(self):
+        self.browser = webdriver.Firefox()
 
-MAX_WAIT = 10
+    def tearDown(self):
+        self.browser.quit()
 
-def wait(fn):
-    def modified_fn(*args, **kwargs):
-        start_time = time.time()
-        while True:
-            try:
-                return fn(*args, **kwargs)
-            except(AssertionError, WebDriverException) as e:
-                if time.time() - start_time > MAX_WAIT:
-                    raise e
-                time.sleep(0.5)
-    return modified_fn
+    def test_can_send_a_message(self):
+        # Edith heard about a cool new messaging app.
+        # The app brings the mail of yesteryear to the internet.
+        # Edith's mail is delivered everyday at 5. She gets
+        # her mail, reads, respnds, and then lives her life.
+        #browser.get(self.live_server_url)
+        self.browser.get("http://localhost:8000/")
 
 
-# class FunctionalTest(StaticLiveServerTestCase):
+        # She notices a page title and header mentions the message app name 
+        self.assertIn('Mapp', self.browser.title)
 
-#     def setUp(self):
-#         self.browser = webdriver.Firefox()
-#         self.staging_server = os.environ.get('STAGING_SERVER')
-#         if self.staging_server:
-#             self.live_server_url = 'http://' + self.staging_server
-#             reset_database(self.staging_server)
+        # She is invited to send a message right away
 
-#     def tearDown(self):
-#         if self._test_has_failed():
-#             if not os.path.exists(SCREEN_DUMP_LOCATION):
-#                 os.makedirs(SCREEN_DUMP_LOCATION)
-#             for ix, handle in enumerate(self.browser.window_handles):
-#                 self._windowid = ix
-#                 self.browser.switch_to_window(handle)
-#                 self.take_screenshot()
-#                 self.dump_html()
-#         self.browser.quit()
-#         super().tearDown()
+        # She types, "I want to buy peacock feathers" into a text box.
+        # Edith's hobby is fly fishing
 
-#     def _test_has_failed(self):
-#         # slightly obscure, but couldn't find a better way!
-#         return any(error for (method, error) in self._outcome.errors)
-
-#     def take_screenshot(self):
-#         filename = self._get_filename() + '.png'
-#         print('screenshot to', filename)
-#         self.browser.get_screenshot_as_file(filename)
-
-#     def dump_html(self):
-#         filename = self._get_filename() + '.html'
-#         print('dumping page HTML to', filename)
-#         with open(filename, 'w') as f:
-#             f.write(self.browser.page_source)
+        # When she hits enter, the page updates and now the page
+        # has a message from edith that says, "I want to buy peacock feathers"
         
-#     def _get_filename(self):
-#         timestamp = datetime.now().isoformat().replace(':', '.')[:19]
-#         return '{folder}/{classname}.{method}-window{windowid}-{timestamp}'.format(
-#             folder=SCREEN_DUMP_LOCATION,
-#             classname=self.__class__.__name__,
-#             method=self._testMethodName,
-#             windowid=self._windowid,
-#             timestamp=timestamp
-#         )
+        # There is stil a text box inviting her to send another message
+
+        # She types, "I will then use the peacock feathers to make a fly"
+        
+        # The page udpates again, and now there are two messages from edith
 
 
-
-browser = webdriver.Firefox()
-browser.get('http://localhost:8000')
-
-assert 'Django' in browser.title
+if __name__ == '__main__':
+    unittest.main(warnings='ignore')
