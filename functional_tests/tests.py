@@ -27,7 +27,7 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn('Mapp Messages', header_text)
 
         # She is invited to send a message right away
-        inputbox = self.browser.find_element_by_id('id_new_message')
+        inputbox = self.browser.find_element_by_id('id_new_msg')
         self.assertEqual(
             inputbox.get_attribute('placeholder'), 
             'Send a message'
@@ -43,19 +43,33 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
 
-        table = self.browser.find_element_by_id('id_message_table')
+        table = self.browser.find_element_by_id('id_msg_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(
-            any(row.text == 'I want to buy peacock feathers' for row in rows),
-            'New message did not appear in table'
-        )
+        self.assertIn('1: I want to buy peacock feathers', [row.text for row in rows])
 
         
         # There is stil a text box inviting her to send another message
-        # She types, "I will then use the peacock feathers to make a fly"
-        self.fail('Finish the Test')
+        # She types, "I will then use peacock feathers to make a fly"
+        inputbox = self.browser.find_element_by_id('id_new_msg')
+        inputbox.send_keys('I will then use peacock feathers to make a fly')
+        inputbox.send_keys(Keys.ENTER)
+        time.sleep(1)
         
         # The page udpates again, and now there are two messages from edith
+        table = self.browser.find_element_by_id('id_msg_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn('1: I want to buy peacock feathers', [row.text for row in rows])
+        self.assertIn(
+            '2: I will then use peacock feathers to make a fly',
+            [row.text for row in rows]
+        )
+
+        # Edith wonders whether the site will remember her list. Then
+        # she sees that the site has generated a unique URL for her --
+        ##there is some explanatory text to that effect.
+        self.fail('Finish the test!')
+
+        # She visits that URL - her to list is still there
 
 
 if __name__ == '__main__':

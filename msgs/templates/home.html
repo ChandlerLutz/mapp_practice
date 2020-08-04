@@ -2,8 +2,12 @@
     <title>Mapp</title>
     <body>
 	<h1>Mapp Messages</h1>
-	<input id="id_new_message" placeholder="Send a message">
-	<table id="id_message_table">
+	<form method="POST">
+	    <input name="msg_text" id="id_new_msg" placeholder="Send a message">
+	    {% csrf_token %}
+	</form>
+	<table id="id_msg_table">
+	    <tr><td>1: {{ new_msg_text }}</td></tr>
 	</table>
     </body>
 </html>
