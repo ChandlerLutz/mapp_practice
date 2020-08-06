@@ -1,10 +1,11 @@
 # functional_tests/tests.py
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
-import unittest
 
-class NewVisitorTest(unittest.TestCase):
+
+class NewVisitorTest(LiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -23,7 +24,7 @@ class NewVisitorTest(unittest.TestCase):
         # Edith's mail is delivered everyday at 5. She gets
         # her mail, reads, respnds, and then lives her life.
         #browser.get(self.live_server_url)
-        self.browser.get("http://localhost:8000/")
+        self.browser.get(self.live_server_url)
 
 
         # She notices a page title and header mentions the message app name 
@@ -67,7 +68,3 @@ class NewVisitorTest(unittest.TestCase):
         self.fail('Finish the test!')
 
         # She visits that URL - her to list is still there
-
-
-if __name__ == '__main__':
-    unittest.main(warnings='ignore')

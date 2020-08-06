@@ -9,10 +9,32 @@ class HomePageTest(TestCase):
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'home.html')
 
-    def test_can_save_a_post_request(self):
+    def test_can_save_a_POST_request(self):
         response = self.client.post('/', data={'msg_text': 'A new message'})
-        self.assertIn('A new message', response.content.decode())
-        self.assertTemplateUsed(response, 'home.html')
+
+        self.assertEqual(Msg.objects.count(), 1)
+        new_msg = Msg.objects.first()
+        self.assertEqual(new_msg.text, 'A new message')
+
+    def test_redirects_after_POST(self):
+        response = self.client.post('/', data={'msg_text': 'A new message'})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/')
+        
+
+    def test_only_saves_messages_when_necessary(self):
+        self.client.get('/')
+        self.assertEqual(Msg.objects.count(), 0)
+
+    def test_displays_all_messages(self):
+        Msg.objects.create(text='message 1')
+        Msg.objects.create(text='message 2')
+
+        response = self.client.get('/')
+
+        self.assertIn('message 1', response.content.decode())
+        self.assertIn('message 2', response.content.decode())
+        
         
                         
 
