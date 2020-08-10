@@ -6,5 +6,10 @@
 	    <input name="msg_text" id="id_new_msg" placeholder="Send a message">
 	    {% csrf_token %}
 	</form>
+	<table id="id_msg_table">
+	    {% for msg in msgs %}
+		<tr><td>{{ forloop.counter }}: {{ msg.text }}</td></tr>
+	    {% endfor %}
+	</table>
     </body>
 </html>

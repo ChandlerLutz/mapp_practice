@@ -19,23 +19,12 @@ class HomePageTest(TestCase):
     def test_redirects_after_POST(self):
         response = self.client.post('/', data={'msg_text': 'A new message'})
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/')
+        self.assertEqual(response['location'], '/threads/the-only-thread-in-the-world/')
         
 
     def test_only_saves_messages_when_necessary(self):
         self.client.get('/')
         self.assertEqual(Msg.objects.count(), 0)
-
-    def test_displays_all_messages(self):
-        Msg.objects.create(text='message 1')
-        Msg.objects.create(text='message 2')
-
-        response = self.client.get('/')
-
-        self.assertIn('message 1', response.content.decode())
-        self.assertIn('message 2', response.content.decode())
-        
-        
                         
 
 class MsgModelTest(TestCase):
@@ -58,3 +47,17 @@ class MsgModelTest(TestCase):
         self.assertEqual(second_saved_msg.text, 'Msg the second')
         
         
+class ThreadViewTest(TestCase):
+
+    def test_uses_thread_template(self):
+        response = self.client.get('/threads/the-only-thread-in-the-world/')
+        self.assertTemplateUsed(response, 'thread.html')
+
+    def test_displays_all_items(self):
+        Msg.objects.create(text='thready 1')
+        Msg.objects.create(text='thready 2')
+
+        response = self.client.get('/threads/the-only-thread-in-the-world/')
+
+        self.assertContains(response, 'thready 1')
+        self.assertContains(response, 'thready 2')

@@ -53,13 +53,11 @@ class NewVisitorTest(LiveServerTestCase):
         # Edith's hobby is fly fishing
         inputbox.send_keys('I want to buy peacock feathers')
         
-
         # When she hits enter, the page updates and now the page
         # has a message from edith that says, "I want to buy peacock feathers"
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
         self.wait_for_row_in_msg_table('1: I want to buy peacock feathers')
-        
         
         # There is stil a text box inviting her to send another message
         # She types, "I will then use peacock feathers to make a fly"
