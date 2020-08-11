@@ -72,7 +72,7 @@ class NewVisitorTest(LiveServerTestCase):
         # Satisfied, she goes back to sleep
 
     def test_multiple_users_can_start_message_threads_at_different_urls(self):
-        # Edith starts a new to-do list
+        # Edith starts a new thread
         self.browser.get(self.live_server_url)
         inputbox = self.browser.find_element_by_id('id_new_msg')
         inputbox.send_keys('Buy peacock feathers')
@@ -80,8 +80,8 @@ class NewVisitorTest(LiveServerTestCase):
         self.wait_for_row_in_msg_table('1: Buy peacock feathers')
 
         # She notices that her message thread has a unique URL
-        edith_list_url = self.browser.current_url
-        self.assertRegex(edith_list_url, '/threads/.+')
+        edith_thread_url = self.browser.current_url
+        self.assertRegex(edith_thread_url, '/threads/.+')
 
         # Now a new user, Francis, comes along to the site.
 
@@ -105,10 +105,10 @@ class NewVisitorTest(LiveServerTestCase):
 
         # Frnaces gets his own unique URL
         francis_thread_url = self.browser.current_url
-        self.assertRegext(francis_thread_url, '/threads/.+')
-        self.assertNotEqual(francis_list_url, edith_list_url)
+        self.assertRegex(francis_thread_url, '/threads/.+')
+        self.assertNotEqual(francis_thread_url, edith_thread_url)
 
-        # Again, there is no trace of Edith's list
+        # Again, there is no trace of Edith's thread
         page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('Buy peacock feathers', page_text)
         self.assertIn('Buy milk', page_text)
@@ -121,6 +121,6 @@ class NewVisitorTest(LiveServerTestCase):
         # Edith wonders whether the site will remember her messages. Then
         # she sees that the site has generated a unique URL for her --
         ##there is some explanatory text to that effect.
-        self.fail('Finish the test!')
+
 
         # She visits that URL - her to list is still there

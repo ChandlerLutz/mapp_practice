@@ -2,12 +2,12 @@
     <title>Mapp</title>
     <body>
 	<h1>Mapp Messages</h1>
-	<form method="POST" action="/threads/new">
+	<form method="POST" action="/threads/{{ thread.id }}/add_item">
 	    <input name="msg_text" id="id_new_msg" placeholder="Send a message">
 	    {% csrf_token %}
 	</form>
 	<table id="id_msg_table">
-	    {% for msg in msgs %}
+	    {% for msg in thread.msg_set.all %}
 		<tr><td>{{ forloop.counter }}: {{ msg.text }}</td></tr>
 	    {% endfor %}
 	</table>
