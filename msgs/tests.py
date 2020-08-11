@@ -9,23 +9,6 @@ class HomePageTest(TestCase):
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'home.html')
 
-    def test_can_save_a_POST_request(self):
-        response = self.client.post('/', data={'msg_text': 'A new message'})
-
-        self.assertEqual(Msg.objects.count(), 1)
-        new_msg = Msg.objects.first()
-        self.assertEqual(new_msg.text, 'A new message')
-
-    def test_redirects_after_POST(self):
-        response = self.client.post('/', data={'msg_text': 'A new message'})
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/threads/the-only-thread-in-the-world/')
-        
-
-    def test_only_saves_messages_when_necessary(self):
-        self.client.get('/')
-        self.assertEqual(Msg.objects.count(), 0)
-                        
 
 class MsgModelTest(TestCase):
 
@@ -61,3 +44,17 @@ class ThreadViewTest(TestCase):
 
         self.assertContains(response, 'thready 1')
         self.assertContains(response, 'thready 2')
+
+class NewThreadTest(TestCase):
+
+
+    def test_can_save_a_POST_request(self):
+        response = self.client.post('/threads/new', data={'msg_text': 'A new message'})
+
+        self.assertEqual(Msg.objects.count(), 1)
+        new_msg = Msg.objects.first()
+        self.assertEqual(new_msg.text, 'A new message')
+
+    def test_redirects_after_POST(self):
+        response = self.client.post('/threads/new', data={'msg_text': 'A new message'})
+        self.assertRedirects(response, '/threads/the-only-thread-in-the-world/')

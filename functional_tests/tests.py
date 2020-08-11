@@ -28,14 +28,13 @@ class NewVisitorTest(LiveServerTestCase):
                     raise e
                 time.sleep(0.5)
 
-    def test_can_send_a_message(self):
+    def test_can_send_a_message_for_one_user(self):
         # Edith heard about a cool new messaging app.
         # The app brings the mail of yesteryear to the internet.
         # Edith's mail is delivered everyday at 5. She gets
         # her mail, reads, respnds, and then lives her life.
         #browser.get(self.live_server_url)
         self.browser.get(self.live_server_url)
-
 
         # She notices a page title and header mentions the message app name 
         self.assertIn('Mapp', self.browser.title)

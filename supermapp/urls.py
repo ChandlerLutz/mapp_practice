@@ -19,6 +19,7 @@ from msgs import views
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
-    re_path(r'^$', views.home_page, name='home'), 
-    re_path(r'^threads/the-only-thread-in-the-world/$', views.view_thread, name='view_thread'), 
+    re_path(r'^$', views.home_page, name='home'),
+    re_path(r'^threads/new$', views.new_thread, name='new_thread'), 
+    re_path(r'^threads/the-only-thread-in-the-world/$', views.view_thread, name='view_thread'),
 ]

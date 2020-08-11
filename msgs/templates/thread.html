@@ -2,7 +2,7 @@
     <title>Mapp</title>
     <body>
 	<h1>Mapp Messages</h1>
-	<form method="POST" action="/">
+	<form method="POST" action="/threads/new">
 	    <input name="msg_text" id="id_new_msg" placeholder="Send a message">
 	    {% csrf_token %}
 	</form>
