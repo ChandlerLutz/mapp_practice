@@ -1,5 +1,5 @@
 from django.test import TestCase
-from msgs.models import Msg 
+from msgs.models import Msg, Thread
 
 from msgs.views import home_page
 
@@ -10,16 +10,24 @@ class HomePageTest(TestCase):
         self.assertTemplateUsed(response, 'home.html')
 
 
-class MsgModelTest(TestCase):
+class ThreadAndMsgModelTest(TestCase):
 
     def test_saving_and_retrieving_msgs(self):
+        thread = Thread()
+        thread.save()
+        
         first_msg = Msg()
         first_msg.text = 'The first (ever) message'
+        first_msg.thread = thread
         first_msg.save()
 
         second_msg = Msg()
         second_msg.text = 'Msg the second'
+        second_msg.thread = thread
         second_msg.save()
+
+        saved_thread = Thread.objects.first()
+        self.assertEqual(saved_thread, thread)
 
         saved_msgs = Msg.objects.all()
         self.assertEqual(saved_msgs.count(), 2)
@@ -27,7 +35,9 @@ class MsgModelTest(TestCase):
         first_saved_msg = saved_msgs[0]
         second_saved_msg = saved_msgs[1]
         self.assertEqual(first_saved_msg.text, 'The first (ever) message')
+        self.assertEqual(first_saved_msg.thread, thread)
         self.assertEqual(second_saved_msg.text, 'Msg the second')
+        self.assertEqual(second_saved_msg.thread, thread)
         
         
 class ThreadViewTest(TestCase):
@@ -37,8 +47,9 @@ class ThreadViewTest(TestCase):
         self.assertTemplateUsed(response, 'thread.html')
 
     def test_displays_all_items(self):
-        Msg.objects.create(text='thready 1')
-        Msg.objects.create(text='thready 2')
+        thread = Thread.objects.create()
+        Msg.objects.create(text='thready 1', thread=thread)
+        Msg.objects.create(text='thready 2', thread=thread)
 
         response = self.client.get('/threads/the-only-thread-in-the-world/')
 
