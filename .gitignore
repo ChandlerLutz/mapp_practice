@@ -7,3 +7,4 @@ __pycach__
 /static
 .env
 functional_tests/screendumps
+/static

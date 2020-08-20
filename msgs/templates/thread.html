@@ -5,7 +5,7 @@
 {% block form_action %}/threads/{{ thread.id }}/add_msg{% endblock %}
 
 {% block table %}
-    <table id="id_msg_table">
+    <table id="id_msg_table" class="table">
 	{% for msg in thread.msg_set.all %}
 	    <tr><td>{{ forloop.counter }}: {{ msg.text }}</td></tr>
 	{% endfor %}
